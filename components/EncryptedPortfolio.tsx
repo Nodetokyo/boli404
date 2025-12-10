@@ -1,165 +1,156 @@
 import React, { useState, useEffect } from 'react';
-import { Lock, Unlock, ArrowRight, X, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { Lock, Unlock, ArrowRight, X, ChevronLeft, ChevronRight, ExternalLink, ImageOff } from 'lucide-react';
 import { Project, EncryptionStatus } from '../types';
 
-// DATA STRUCTURE FOR EASY REPLACEMENT
-// To replace images in GitHub:
-// 1. Upload your images to a 'public/works/[id]/' folder
-// 2. Replace the URLs below with strings like: '/works/01/1.jpg'
+// DATA STRUCTURE FOR LOCAL IMAGES
+// Ensure you have created the 'public/works' folder structure as described in README.txt
 const PROJECTS: Project[] = [
   { 
     id: '1', 
     title: '東京大浮世絵展', 
     category: '3D', 
-    // Thumb: /works/01/thumb.jpg
-    imageUrl: 'https://images.unsplash.com/photo-1582234057962-421735741065?q=80&w=1000&auto=format&fit=crop', 
+    imageUrl: '/works/01/thumb.jpg', 
     isLocked: false,
     description: "丸ビルで行われたプロジェクションマッピングでは、3D制作部分を担当しました。",
     link: "https://www.youtube.com/watch?v=AXSEpvZ9G70&list=RDAXSEpvZ9G70&start_radio=1",
     galleryImages: [
-      // Image 1: /works/01/1.jpg
-      'https://images.unsplash.com/photo-1582234057962-421735741065?q=80&w=1200&auto=format&fit=crop',
-      // Image 2: /works/01/2.jpg
-      'https://images.unsplash.com/photo-1578989542981-d1026027a42c?q=80&w=1200&auto=format&fit=crop',
-      // Image 3: /works/01/3.jpg
-      'https://images.unsplash.com/photo-1528360983277-13d9b152c6d1?q=80&w=1200&auto=format&fit=crop',
-      // GIF 1: /works/01/4.gif
-      'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmhmZHRhZnZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKSjRrfIPjeiVyM/giphy.gif',
-      // GIF 2: /works/01/5.gif
-      'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmhmZHRhZnZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0HlOaQcLJ2hHpYcw/giphy.gif'
+      '/works/01/1.jpg',
+      '/works/01/2.jpg',
+      '/works/01/3.jpg',
+      '/works/01/4.gif',
+      '/works/01/5.gif'
     ]
   },
   { 
     id: '2', 
     title: '〈クレ・ド・ポー ボーテ〉POP UP', 
     category: '3D', 
-    // Thumb: /works/02/thumb.jpg
-    imageUrl: 'https://images.unsplash.com/photo-1596462502278-27bfdd403cc2?q=80&w=1000&auto=format&fit=crop', 
+    imageUrl: '/works/02/thumb.jpg', 
     isLocked: false,
     description: "麻布台ヒルズで開催されたCPBイベントでは、インスタレーションの3D演出部分を担当しました。",
     galleryImages: [
-      // Image 1: /works/02/1.jpg
-      'https://images.unsplash.com/photo-1596462502278-27bfdd403cc2?q=80&w=1200&auto=format&fit=crop',
-      // Image 2: /works/02/2.jpg
-      'https://images.unsplash.com/photo-1616486029423-aaa478965c96?q=80&w=1200&auto=format&fit=crop',
-      // GIF 1: /works/02/3.gif
-      'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmhmZHRhZnZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o6ZtpWvwnhf34Oj0A/giphy.gif'
+      '/works/02/1.jpg',
+      '/works/02/2.jpg',
+      '/works/02/3.gif'
     ]
   },
   { 
     id: '3', 
     title: 'Kenji Sakai 展示', 
     category: 'Installation', 
-    // Thumb: /works/03/thumb.jpg
-    imageUrl: 'https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?q=80&w=1000&auto=format&fit=crop', 
+    imageUrl: '/works/03/thumb.jpg', 
     isLocked: false,
     description: "Nomadic GalleryでのKenji Sakai氏個展では、インスタレーションのインストールおよびインタラクティブ演出部分を担当しました。",
     galleryImages: [
-      // Image 1: /works/03/1.jpg
-      'https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?q=80&w=1200&auto=format&fit=crop',
-      // Image 2: /works/03/2.jpg
-      'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1200&auto=format&fit=crop'
+      '/works/03/1.jpg',
+      '/works/03/2.jpg'
     ]
   },
   { 
     id: '4', 
     title: '万博インスタレーション', 
     category: 'Installation', 
-    // Thumb: /works/04/thumb.jpg
-    imageUrl: 'https://picsum.photos/600/400?random=10', 
+    imageUrl: '/works/04/thumb.jpg', 
     isLocked: true,
     description: "東北大学の研究プロジェクトでは、脳波インタラクション装置におけるビジュアル演出部分を担当しました。",
     galleryImages: [
-       // Image 1: /works/04/1.jpg
-       'https://picsum.photos/1200/800?random=101', 
-       // Image 2: /works/04/2.jpg
-       'https://picsum.photos/1200/800?random=102',
-       // GIF 1: /works/04/3.gif
-       'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmhmZHRhZnZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l41lFw057lAJQMwg0/giphy.gif'
+       '/works/04/1.jpg', 
+       '/works/04/2.jpg',
+       '/works/04/3.gif'
     ]
   },
   { 
     id: '5', 
     title: 'イマーシブフォート', 
     category: '3D', 
-    // Thumb: /works/05/thumb.jpg
-    imageUrl: 'https://picsum.photos/600/400?random=11', 
+    imageUrl: '/works/05/thumb.jpg', 
     isLocked: true,
     description: "イマーシブフォートのリブランディングプロジェクトでは、ポスター用3Dタイポグラフィ部分を担当しました。",
     galleryImages: [
-        // Image 1: /works/05/1.jpg
-        'https://picsum.photos/1200/800?random=111'
+        '/works/05/1.jpg'
     ]
   },
   { 
     id: '6', 
     title: 'QUALITY 1st', 
     category: '3D', 
-    // Thumb: /works/06/thumb.jpg
-    imageUrl: 'https://picsum.photos/600/400?random=12', 
+    imageUrl: '/works/06/thumb.jpg', 
     isLocked: true,
     description: "Quality 1stのプロモーションコンテンツでは、3D制作部分を担当しました。",
     galleryImages: [
-        // Image 1: /works/06/1.jpg
-        'https://picsum.photos/1200/800?random=121',
-        // Image 2: /works/06/2.jpg
-        'https://picsum.photos/1200/800?random=122',
-        // Image 3: /works/06/3.jpg
-        'https://picsum.photos/1200/800?random=123'
+        '/works/06/1.jpg',
+        '/works/06/2.jpg',
+        '/works/06/3.jpg'
     ]
   },
   { 
     id: '7', 
     title: 'FENDI HOLIDAY', 
     category: '3D', 
-    // Thumb: /works/07/thumb.jpg
-    imageUrl: 'https://picsum.photos/600/400?random=13', 
+    imageUrl: '/works/07/thumb.jpg', 
     isLocked: true,
     description: "FENDI 2025 Holiday企画では、3Dアニメーション部分を担当しました。",
     galleryImages: [
-        // Image 1: /works/07/1.jpg
-        'https://picsum.photos/1200/800?random=131',
-        // Image 2: /works/07/2.jpg
-        'https://picsum.photos/1200/800?random=132',
-        // GIF 1: /works/07/3.gif
-        'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmhmZHRhZnZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26BRS5J6h07yVw7Cg/giphy.gif'
+        '/works/07/1.jpg',
+        '/works/07/2.jpg',
+        '/works/07/3.gif'
     ]
   },
   { 
     id: '8', 
     title: 'UFO x Zone', 
     category: '3D Printer', 
-    // Thumb: /works/08/thumb.jpg
-    imageUrl: 'https://picsum.photos/600/400?random=14', 
+    imageUrl: '/works/08/thumb.jpg', 
     isLocked: true,
     description: "UFOXZONEのプロジェクトでは、ランドタオルや3Dプリントなどの実体物制作部分を担当しました。",
     galleryImages: [
-        // Image 1: /works/08/1.jpg
-        'https://picsum.photos/1200/800?random=141',
-        // Image 2: /works/08/2.jpg
-        'https://picsum.photos/1200/800?random=142'
+        '/works/08/1.jpg',
+        '/works/08/2.jpg'
     ]
   },
   { 
     id: '9', 
     title: 'Baycurrent Year End Party 2025', 
     category: 'Visual', 
-    // Thumb: /works/09/thumb.jpg
-    imageUrl: 'https://picsum.photos/600/400?random=15', 
+    imageUrl: '/works/09/thumb.jpg', 
     isLocked: true,
     description: "Tokyo Domeで開催されたbaycurrentのYear End Partyでは、アーティスト演出におけるビジュアル演出部分を担当しました。",
     galleryImages: [
-        // Image 1: /works/09/1.jpg
-        'https://picsum.photos/1200/800?random=151',
-        // Image 2: /works/09/2.jpg
-        'https://picsum.photos/1200/800?random=152',
-        // Image 3: /works/09/3.jpg
-        'https://picsum.photos/1200/800?random=153',
-        // GIF 1: /works/09/4.gif
-        'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmhmZHRhZnZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6YWZ6eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKrEzvJbsF96MI0/giphy.gif'
+        '/works/09/1.jpg',
+        '/works/09/2.jpg',
+        '/works/09/3.jpg',
+        '/works/09/4.gif'
     ]
   },
 ];
+
+// Safe Image Component to handle broken links
+const SafeImage: React.FC<{ src: string, alt: string, className: string }> = ({ src, alt, className }) => {
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setHasError(false);
+  }, [src]);
+  
+  if (hasError) {
+    return (
+      <div className={`flex flex-col items-center justify-center bg-node-muted/10 text-node-muted ${className}`}>
+         <ImageOff className="w-8 h-8 mb-2 opacity-50" />
+         <span className="text-[10px] font-mono">IMG NOT FOUND</span>
+         <span className="text-[8px] font-mono opacity-50 mt-1">{src}</span>
+      </div>
+    );
+  }
+
+  return (
+    <img 
+      src={src} 
+      alt={alt} 
+      className={className}
+      onError={() => setHasError(true)}
+    />
+  );
+};
 
 const EncryptedPortfolio: React.FC = () => {
   const [status, setStatus] = useState<EncryptionStatus>(EncryptionStatus.LOCKED);
@@ -234,7 +225,7 @@ const EncryptedPortfolio: React.FC = () => {
             >
               {/* Image Layer */}
               <div className={`w-full h-full transition-all duration-700 ease-in-out ${isHidden ? 'blur-md scale-105 opacity-20' : 'blur-0 scale-100 opacity-90 group-hover:scale-105 group-hover:opacity-100'}`}>
-                <img 
+                <SafeImage 
                   src={project.imageUrl} 
                   alt={project.title} 
                   className="w-full h-full object-cover grayscale transition-all duration-700"
@@ -318,7 +309,7 @@ const EncryptedPortfolio: React.FC = () => {
                
                {/* Image Area - Flex-1 to take available space, object-contain for full visibility */}
                <div className="flex-1 relative bg-[#D1D4D9]/20 w-full flex items-center justify-center overflow-hidden">
-                  <img 
+                  <SafeImage 
                     key={currentImageIndex} 
                     src={currentGallery[currentImageIndex]} 
                     alt={`${selectedProject.title} - ${currentImageIndex}`} 
