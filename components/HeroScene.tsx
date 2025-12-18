@@ -1,178 +1,124 @@
+
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Icosahedron, TorusKnot, Sphere, MeshDistortMaterial, Environment, PerspectiveCamera, Float, Lightformer } from '@react-three/drei';
+import { MeshDistortMaterial, Environment, PerspectiveCamera, Lightformer, Icosahedron, Torus } from '@react-three/drei';
 import * as THREE from 'three';
 
-// 1. The Chrome Connector (Silver Tube)
-const ChromeForm = () => {
+const NoiseBall: React.FC<{ 
+  position: [number, number, number], 
+  delay: number,
+  size?: number
+}> = ({ position, delay, size = 1.3 }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   
   useFrame((state) => {
     if (!meshRef.current) return;
     const time = state.clock.getElapsedTime();
-    meshRef.current.rotation.x = time * 0.1;
-    meshRef.current.rotation.y = time * 0.15;
+    // 基础波动
+    meshRef.current.position.y = position[1] + Math.sin(time * 0.7 + delay) * 0.35;
+    meshRef.current.rotation.y = time * 0.25;
   });
 
   return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-      <TorusKnot args={[1, 0.25, 128, 32]} ref={meshRef} position={[0, 0, 0]} rotation={[0.5, 0, 0]}>
-        <meshStandardMaterial 
-          color="#ffffff" 
-          roughness={0.0} // Perfectly smooth chrome
-          metalness={1.0} 
-        />
-      </TorusKnot>
-    </Float>
+    <Icosahedron ref={meshRef} args={[size, 20]} position={position}>
+      <MeshDistortMaterial 
+        color="#020202" // 极致黑
+        speed={2.2} 
+        distort={0.55} 
+        radius={1}
+        metalness={1}
+        roughness={0.03}
+        reflectivity={1}
+        clearcoat={1}
+        clearcoatRoughness={0.05}
+      />
+    </Icosahedron>
   );
 };
 
-// 2. The Matte Aluminum Sphere
-const AluminumForm = () => {
+const ChainLink: React.FC<{ 
+  position: [number, number, number], 
+  rotation: [number, number, number],
+  delay: number 
+}> = ({ position, rotation, delay }) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    if (!meshRef.current) return;
+    const time = state.clock.getElapsedTime();
+    // 连动漂浮
+    meshRef.current.position.y = position[1] + Math.sin(time * 0.7 + delay) * 0.35;
+    meshRef.current.rotation.z = rotation[2] + Math.sin(time * 0.5 + delay) * 0.1;
+  });
+
   return (
-    <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.8}>
-      <Sphere args={[1.2, 64, 64]} position={[0.6, 1.0, -0.5]}>
-        <MeshDistortMaterial
-          color="#A0A0A0" // Neutral Light Grey
-          roughness={0.3} // Matte finish
-          metalness={0.8} // Metallic
-          distort={0.4} 
-          speed={1.0}
-        />
-      </Sphere>
-    </Float>
+    <Torus ref={meshRef} args={[0.78, 0.2, 32, 64]} position={position} rotation={rotation} scale={[1, 1.4, 1]}>
+      <meshPhysicalMaterial 
+        color="#040404" 
+        metalness={1} 
+        roughness={0.02} 
+        reflectivity={1}
+        clearcoat={1}
+        clearcoatRoughness={0.02}
+      />
+    </Torus>
   );
 };
 
-// 3. The Black Obsidian/Oil Blob
-const ObsidianForm = () => {
+const HybridChain = () => {
+  const groupRef = useRef<THREE.Group>(null);
+
+  useFrame((state) => {
+    if (!groupRef.current) return;
+    const scrollY = window.scrollY;
+    const progress = Math.min(scrollY / (window.innerHeight * 0.8), 1);
+    
+    // 整体斜向放置
+    groupRef.current.rotation.z = -0.4; 
+    groupRef.current.rotation.x = 0.2;
+
+    // 滚动动画：淡出并向侧边移动
+    groupRef.current.position.x = 3.5 + progress * 5;
+    groupRef.current.position.z = -progress * 8;
+  });
+
   return (
-    <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.3}>
-      <Sphere args={[1, 64, 64]} position={[-1, -1.5, 0.5]} scale={[1.4, 0.9, 1.2]}>
-        <MeshDistortMaterial
-          color="#111111" // Almost Black
-          roughness={0.05} // Very glossy
-          metalness={0.6}
-          distort={0.7} // Fluid movement
-          speed={2.0}   
-        />
-      </Sphere>
-    </Float>
+    <group ref={groupRef} position={[3.5, 0, 0]}>
+      {/* 顶部 Noise 球体 */}
+      <NoiseBall position={[0, 2.6, 0]} delay={0} size={1.4} />
+      
+      {/* 中间两个交替连锁的圆环 */}
+      <ChainLink position={[0, 0.6, 0]} rotation={[0, Math.PI / 2, 0]} delay={0.4} />
+      <ChainLink position={[0, -0.6, 0]} rotation={[0, 0, 0]} delay={0.8} />
+      
+      {/* 底部 Noise 球体 */}
+      <NoiseBall position={[0, -2.6, 0]} delay={1.2} size={1.5} />
+    </group>
   );
-};
-
-const SceneComposition = () => {
-    const groupRef = useRef<THREE.Group>(null);
-
-    useFrame((state) => {
-        if (!groupRef.current) return;
-        
-        const scrollY = window.scrollY;
-        const viewportHeight = window.innerHeight;
-        const rawProgress = Math.min(scrollY / viewportHeight, 1);
-        
-        const progress = Math.pow(rawProgress, 1.2);
-
-        // Movement: Slide Right and Down, Deep into fog
-        groupRef.current.position.x = 1.5 + (progress * 2.5);
-        groupRef.current.position.y = -(progress * 4.0);
-        groupRef.current.position.z = -(progress * 6.0);
-
-        // Rotation
-        groupRef.current.rotation.y = progress * 1.2; 
-        groupRef.current.rotation.z = -progress * 0.4; 
-        groupRef.current.rotation.x = progress * 0.2;
-
-        // Scale
-        const scale = 1 - (progress * 0.3);
-        groupRef.current.scale.setScalar(scale);
-    });
-
-    return (
-        <group ref={groupRef} position={[1.5, 0, 0]}>
-            <ChromeForm />
-            <AluminumForm />
-            <ObsidianForm />
-        </group>
-    );
 };
 
 const HeroScene: React.FC = () => {
   return (
     <div className="absolute inset-0 z-0 bg-[#E3E5E8]">
-      <Canvas shadows dpr={[1, 2]}>
-        <PerspectiveCamera makeDefault position={[0, 0, 6]} fov={40} />
+      <Canvas shadows dpr={[1, 2]} gl={{ antialias: true, alpha: true }}>
+        <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
         
-        {/* Cold Industrial Lighting */}
-        <ambientLight intensity={1.5} color="#ffffff" /> 
+        <ambientLight intensity={0.15} />
+        {/* 强聚光灯营造截图中的高对比度黑色流质感 */}
+        <spotLight position={[15, 20, 15]} angle={0.25} penumbra={1} intensity={12} color="#ffffff" />
+        <spotLight position={[-15, 0, 10]} angle={0.2} penumbra={1} intensity={6} color="#ffffff" />
+        <pointLight position={[0, 0, 5]} intensity={2} color="#ffffff" />
         
-        {/* Main White Key Light */}
-        <spotLight 
-            position={[5, 10, 5]} 
-            angle={0.5} 
-            penumbra={1} 
-            intensity={4} 
-            color="#ffffff" 
-            castShadow
-        />
-        
-        {/* Cool Blue Rim Light for steel feel */}
-        <spotLight 
-            position={[-5, 5, -5]} 
-            intensity={3} 
-            color="#DCE5F5" 
-        />
-        
-        {/* Subtle fill */}
-        <pointLight position={[0, -5, 2]} intensity={0.5} color="#ffffff" />
+        <HybridChain />
 
-        <SceneComposition />
-
-        {/* 
-            PROCEDURAL ENVIRONMENT (Pure Light, No Objects) 
-            Using Lightformers to create abstract reflections on the chrome.
-            This replaces the 'city' or 'studio' image-based presets.
-        */}
-        <Environment resolution={512}>
-            <group rotation={[-Math.PI / 4, -0.3, 0]}>
-                {/* 1. Main Broad Softbox (Top-Left) - Creates the main smooth sheen */}
-                <Lightformer 
-                    intensity={4} 
-                    rotation-x={Math.PI / 2} 
-                    position={[0, 5, -9]} 
-                    scale={[10, 10, 1]} 
-                />
-                
-                {/* 2. Sharp Side Strip (Left) - Creates a defined "cut" highlight */}
-                <Lightformer 
-                    intensity={8} // Brighter
-                    rotation-y={Math.PI / 2} 
-                    position={[-5, 1, -1]} 
-                    scale={[20, 0.2, 1]} // Thin strip
-                />
-
-                 {/* 3. Lower Fill Strip (Right) - Balances the shadow side */}
-                <Lightformer 
-                    intensity={2} 
-                    rotation-y={Math.PI / 2} 
-                    position={[10, 1, 0]} 
-                    scale={[20, 1, 1]} 
-                    color="#E3E5E8" // Reflects the scene bg color slightly
-                />
-                
-                {/* 4. Subtle Ring Light - Adds complex curvature to the reflection */}
-                <Lightformer 
-                    form="ring" 
-                    color="#ffffff" 
-                    intensity={2} 
-                    scale={5} 
-                    position={[0, 5, -10]}
-                />
-            </group>
+        <Environment resolution={1024}>
+          <group rotation={[-Math.PI / 4, 0, 0]}>
+            <Lightformer intensity={10} rotation-x={Math.PI / 2} position={[0, 15, -5]} scale={[30, 30, 1]} />
+            <Lightformer intensity={5} rotation-y={Math.PI / 2} position={[-15, 5, 5]} scale={[30, 5, 1]} />
+          </group>
         </Environment>
         
-        {/* Fog matched to background for seamless fade */}
-        <fog attach="fog" args={['#E3E5E8', 4, 12]} />
+        <fog attach="fog" args={['#E3E5E8', 12, 28]} />
       </Canvas>
     </div>
   );

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
   <head>
@@ -18,12 +19,12 @@
             },
             colors: {
               node: {
-                bg: '#E3E5E8', // UPDATED: Cool Concrete Gray
-                surface: '#D1D4D9', // UPDATED: Slightly darker gray for cards
-                border: '#B0B5BD', // UPDATED: Medium gray border
-                text: '#1F2937', // UPDATED: Dark Charcoal - High contrast but soft
-                muted: '#64748B', // UPDATED: Slate gray for secondary text
-                accent: '#0F172A' // UPDATED: Midnight blue/black for accents
+                bg: '#E3E5E8', 
+                surface: '#D1D4D9',
+                border: '#B0B5BD',
+                text: '#1F2937',
+                muted: '#64748B',
+                accent: '#0F172A'
               }
             }
           }
@@ -32,11 +33,10 @@
     </script>
     <style>
       body {
-        background-color: #E3E5E8; /* UPDATED: Concrete Gray */
-        color: #1F2937; /* UPDATED: Charcoal */
+        background-color: #E3E5E8;
+        color: #1F2937;
         overflow-x: hidden;
       }
-      /* Custom Scrollbar - Monochrome Gray Theme */
       ::-webkit-scrollbar {
         width: 8px;
       }
@@ -50,8 +50,6 @@
       ::-webkit-scrollbar-thumb:hover {
         background: #64748B;
       }
-      
-      /* Noise Texture - Subtle grain for concrete feel */
       .bg-noise {
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.3'/%3E%3C/svg%3E");
       }
@@ -59,14 +57,17 @@
   <script type="importmap">
 {
   "imports": {
-    "@react-three/fiber": "https://aistudiocdn.com/@react-three/fiber@^9.4.2",
-    "react/": "https://aistudiocdn.com/react@^19.2.1/",
-    "react": "https://aistudiocdn.com/react@^19.2.1",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",
-    "@react-three/drei": "https://aistudiocdn.com/@react-three/drei@^10.7.7",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
-    "three": "https://aistudiocdn.com/three@^0.181.2"
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "three": "https://esm.sh/three@0.173.0",
+    "three/": "https://esm.sh/three@0.173.0/",
+    "@react-three/fiber": "https://esm.sh/@react-three/fiber@9.0.0-rc.3?external=three,react,react-dom",
+    "@react-three/drei": "https://esm.sh/@react-three/drei@10.0.0-rc.2?external=three,react,react-dom,@react-three/fiber",
+    "lucide-react": "https://esm.sh/lucide-react@0.460.0?external=react",
+    "@google/genai": "https://esm.sh/@google/genai@1.31.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/"
   }
 }
 </script>
