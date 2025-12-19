@@ -11,7 +11,13 @@ const PROJECTS: Project[] = [
     imageUrl: './works/01/thumb.jpg', 
     isLocked: false,
     description: "丸ビルで行われたプロジェクションマッピングでは、3D制作部分を担当しました。",
-    galleryImages: ['./works/01/1.jpg', './works/01/2.jpg']
+    galleryImages: [
+      './works/01/1.jpg', 
+      './works/01/2.gif', 
+      './works/01/3.jpg', 
+      './works/01/4.gif', 
+      './works/01/5.gif'
+    ]
   },
   { 
     id: '2', 
@@ -20,7 +26,11 @@ const PROJECTS: Project[] = [
     imageUrl: './works/02/thumb.jpg', 
     isLocked: false,
     description: "麻布台ヒルズで開催されたCPBイベントでは、インスタレーションの3D演出部分を担当しました。",
-    galleryImages: ['./works/02/1.jpg', './works/02/2.jpg']
+    galleryImages: [
+      './works/02/1.jpg', 
+      './works/02/2.gif', 
+      './works/02/3.gif'
+    ]
   },
   { 
     id: '3', 
@@ -29,7 +39,11 @@ const PROJECTS: Project[] = [
     imageUrl: './works/03/thumb.jpg', 
     isLocked: false,
     description: "Nomadic GalleryでのKenji Sakai氏个展では、インスタレーションのインストールおよびインタラクティブ演出部分を担当しました。",
-    galleryImages: ['./works/03/1.jpg', './works/03/2.jpg']
+    galleryImages: [
+      './works/03/1.jpg', 
+      './works/03/2.gif', 
+      './works/03/3.gif'
+    ]
   },
   { 
     id: '4', 
@@ -38,7 +52,11 @@ const PROJECTS: Project[] = [
     imageUrl: './works/04/thumb.jpg', 
     isLocked: true,
     description: "东北大学の研究プロジェクトでは、脳波インタラクション装置におけるビジュアル演出部分を担当しました。",
-    galleryImages: ['./works/04/1.jpg', './works/04/2.jpg']
+    galleryImages: [
+      './works/04/1.jpg', 
+      './works/04/2.jpg',
+      './works/04/3.gif'
+    ]
   },
   { 
     id: '5', 
@@ -47,7 +65,10 @@ const PROJECTS: Project[] = [
     imageUrl: './works/05/thumb.jpg', 
     isLocked: true,
     description: "イマーシブフォートのリブランディングプロジェクトでは、ポスター用3Dタイポグラフィ部分を担当しました。",
-    galleryImages: ['./works/05/1.jpg']
+    galleryImages: [
+      './works/05/1.jpg',
+      './works/05/2.gif'
+    ]
   },
   { 
     id: '6', 
@@ -56,7 +77,11 @@ const PROJECTS: Project[] = [
     imageUrl: './works/06/thumb.jpg', 
     isLocked: true,
     description: "Quality 1stのプロモーションコンテンツでは、3D制作部分を担当しました。",
-    galleryImages: ['./works/06/1.jpg', './works/06/2.jpg']
+    galleryImages: [
+      './works/06/1.jpg', 
+      './works/06/2.jpg',
+      './works/06/3.gif'
+    ]
   },
   { 
     id: '7', 
@@ -65,7 +90,11 @@ const PROJECTS: Project[] = [
     imageUrl: './works/07/thumb.jpg', 
     isLocked: true,
     description: "FENDI 2025 Holiday企画では、3Dアニメーション部分を担当しました。",
-    galleryImages: ['./works/07/1.jpg', './works/07/2.jpg']
+    galleryImages: [
+      './works/07/1.jpg', 
+      './works/07/2.gif',
+      './works/07/3.gif'
+    ]
   },
   { 
     id: '8', 
@@ -74,7 +103,10 @@ const PROJECTS: Project[] = [
     imageUrl: './works/08/thumb.jpg', 
     isLocked: true,
     description: "UFOXZONEのプロジェクトでは、ランドタオルや3Dプリントなどの実体物制作部分を担当しました。",
-    galleryImages: ['./works/08/1.jpg']
+    galleryImages: [
+      './works/08/1.jpg',
+      './works/08/2.gif'
+    ]
   },
   { 
     id: '9', 
@@ -82,8 +114,12 @@ const PROJECTS: Project[] = [
     category: 'Real-time Graphics', 
     imageUrl: './works/09/thumb.jpg', 
     isLocked: true,
-    description: "Tokyo Domeで開催されたBayCurrentのYear End Partyでは、アーティスト演出におけるビジュアル演出部分を担当しました。",
-    galleryImages: ['./works/09/1.jpg', './works/09/2.jpg']
+    description: "Tokyo Domeで開催されたBayCurrent의 Year End Partyでは、アーティスト演出におけるビジュアル演出部分を担当しました。",
+    galleryImages: [
+      './works/09/1.jpg', 
+      './works/09/2.jpg',
+      './works/09/3.gif'
+    ]
   }
 ];
 
