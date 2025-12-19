@@ -13,10 +13,10 @@ const PROJECTS: Project[] = [
     description: "丸ビルで行われたプロジェクションマッピングでは、3D制作部分を担当しました。",
     galleryImages: [
       './works/01/1.jpg', 
-      './works/01/2.gif', 
+      './works/01/2.jpg', 
       './works/01/3.jpg', 
-      './works/01/4.gif', 
-      './works/01/5.gif'
+      './works/01/4.jpg', 
+      './works/01/5.jpg'
     ]
   },
   { 
@@ -28,8 +28,8 @@ const PROJECTS: Project[] = [
     description: "麻布台ヒルズで開催されたCPBイベントでは、インスタレーションの3D演出部分を担当しました。",
     galleryImages: [
       './works/02/1.jpg', 
-      './works/02/2.gif', 
-      './works/02/3.gif'
+      './works/02/2.jpg', 
+      './works/02/3.jpg'
     ]
   },
   { 
@@ -41,8 +41,8 @@ const PROJECTS: Project[] = [
     description: "Nomadic GalleryでのKenji Sakai氏个展では、インスタレーションのインストールおよびインタラクティブ演出部分を担当しました。",
     galleryImages: [
       './works/03/1.jpg', 
-      './works/03/2.gif', 
-      './works/03/3.gif'
+      './works/03/2.jpg', 
+      './works/03/3.jpg'
     ]
   },
   { 
@@ -92,8 +92,8 @@ const PROJECTS: Project[] = [
     description: "FENDI 2025 Holiday企画では、3Dアニメーション部分を担当しました。",
     galleryImages: [
       './works/07/1.jpg', 
-      './works/07/2.gif',
-      './works/07/3.gif'
+      './works/07/2.jpg',
+      './works/07/3.jpg'
     ]
   },
   { 
@@ -114,7 +114,7 @@ const PROJECTS: Project[] = [
     category: 'Real-time Graphics', 
     imageUrl: './works/09/thumb.jpg', 
     isLocked: true,
-    description: "Tokyo Domeで開催されたBayCurrent의 Year End Partyでは、アーティスト演出におけるビジュアル演出部分を担当しました。",
+    description: "Tokyo Domeで開催されたBayCurrentのYear End Partyでは、アーティスト演出におけるビジュアル演出部分を担当しました。",
     galleryImages: [
       './works/09/1.jpg', 
       './works/09/2.jpg',
@@ -125,6 +125,12 @@ const PROJECTS: Project[] = [
 
 const SafeImage: React.FC<{ src: string, alt: string, className: string }> = ({ src, alt, className }) => {
   const [error, setError] = useState(false);
+  
+  // 当 src 改变时重置错误状态
+  useEffect(() => {
+    setError(false);
+  }, [src]);
+
   if (error) {
     return (
       <div className={`flex flex-col items-center justify-center bg-node-surface text-node-muted ${className}`}>
